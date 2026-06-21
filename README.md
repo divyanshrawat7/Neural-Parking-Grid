@@ -1,7 +1,7 @@
 # Neural Parking & Congestion Grid 
 **An AI-Driven Urban Command Center for Proactive Traffic Enforcement**
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)]([[Insert your Live Streamlit Cloud Link Here]](https://drive.google.com/file/d/19Tit28O-tZLeZ58_J_gXTRxzb8FzNaXG/view?usp=sharing))
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)]([Live Link](https://drive.google.com/file/d/19Tit28O-tZLeZ58_J_gXTRxzb8FzNaXG/view?usp=sharing))
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 

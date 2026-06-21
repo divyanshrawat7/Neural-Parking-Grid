@@ -65,9 +65,8 @@ To launch the interactive deployment map and UI:
 neural-parking-grid/
 │
 ├── app.py                         # The Core Streamlit Application & AI Dashboard
-├── [Your_Notebook_Name].ipynb     # The mathematical research and pipeline notebook
+├── Parking_Congestion_DBSCAN_Research.ipynb     # The mathematical research and pipeline notebook
 ├── tactical_hotspots.csv          # Pre-computed deployment zones (See note below)
 ├── requirements.txt               # Package dependencies
 └── README.md                      # Project documentation
 
-*(Note: Replace `[Your_Notebook_Name].ipynb` with the actual filename of your Jupyter notebook in the repository).*

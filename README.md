@@ -1,7 +1,7 @@
-# ⚡ Neural Parking & Congestion Grid 
+# Neural Parking & Congestion Grid 
 **An AI-Driven Urban Command Center for Proactive Traffic Enforcement**
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)]([Insert your Streamlit Cloud Link Here])
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)]([Insert your Live Streamlit Cloud Link Here])
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -9,27 +9,33 @@
 
 ---
 
-## 🛑 The Problem
-Modern urban traffic enforcement is entirely **reactive**. Police patrols respond to complaints, but they lack the macro-level visibility to see how localized illegal parking cascades into systemic city-wide gridlock. There is no heatmap of violations mapped against actual congestion impact, making it impossible to prioritize deployments effectively.
-
-## 🟢 The Solution
-The **Neural Parking & Congestion Grid** is an autonomous AI Command Center. Instead of just plotting raw data points, this system ingests raw police telemetry, compresses the noise, and mathematically proves the existence of high-impact congestion zones. It shifts law enforcement from a reactive, patrol-based model to a **predictive, intelligence-driven operation.**
+## Access Links
+* **Live Command Center:** [[Insert your Live Streamlit Cloud Link Here]]
+* **Raw Telemetry Dataset (CSV):** [[Insert your Google Drive Dataset Link Here]]
 
 ---
 
-## ✨ Key Technical Features
+## The Problem
+Modern urban traffic enforcement is entirely reactive. Police patrols respond to complaints, but they lack the macro-level visibility to see how localized illegal parking cascades into systemic city-wide gridlock. There is no heatmap of violations mapped against actual congestion impact, making it impossible to prioritize deployments effectively.
+
+## The Solution
+The Neural Parking & Congestion Grid is an autonomous AI Command Center. Instead of just plotting raw data points, this system ingests raw police telemetry, compresses the noise, and mathematically proves the existence of high-impact congestion zones. It shifts law enforcement from a reactive, patrol-based model to a predictive, intelligence-driven operation.
+
+---
+
+## Key Technical Features
 
 * **Unsupervised AI Clustering (DBSCAN):** Utilizes Density-Based Spatial Clustering to group hundreds of thousands of raw GPS coordinates into bounded, actionable macro-hotspots, preventing memory overflow via Spatial Grid Binning.
 * **Traffic Impact Quantifier:** An algorithmic scoring engine that penalizes parking violations based on their proximity to critical city junctions, ranking zones by actual traffic degradation rather than just volume.
-* **Cyberpunk Command UI:** A highly customized, immersive Streamlit dashboard featuring:
-  * Neon gradient heatmaps (Blue -> Cyan -> Green -> Magenta)
+* **Command UI:** A highly customized, immersive Streamlit dashboard featuring:
+  * Neon gradient density heatmaps
   * Interactive, tactical Folium deployment map
   * **"Target Lock" System:** Instantly isolates and zooms in on high-priority jurisdictions.
 * **Deployment Manifest Generation:** Automatically calculates the exact Police Station jurisdiction and the optimal "Peak Strike Time" for patrol deployment.
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 * **Frontend & Architecture:** Streamlit, Custom CSS
 * **Geospatial & Mapping:** Folium, Streamlit-Folium
@@ -38,29 +44,35 @@ The **Neural Parking & Congestion Grid** is an autonomous AI Command Center. Ins
 
 ---
 
-## 🚀 How to Run Locally
+## How to Run Locally
 
-If you wish to run the Command Center on your local machine:
+Because the raw traffic telemetry dataset is too large to host on GitHub, you must first download the CSV file from the Google Drive link provided at the top of this document. 
 
-**1. Clone the repository:**
-`git clone https://github.com/YourUsername/neural-parking-grid.git`
-`cd neural-parking-grid`
+Once downloaded, you can explore the project via two distinct paths:
 
-**2. Install dependencies:**
-`pip install -r requirements.txt`
+### Path 1: Algorithm Proving Ground (Jupyter Notebook)
+To view the underlying mathematical models, data compression techniques, and algorithm optimization:
+1. Clone the repository to your local machine.
+2. Ensure the downloaded dataset is in the same directory.
+3. Open and run the `.ipynb` file from top to bottom. This will execute the DBSCAN clustering and export the resulting macro-zones into the `tactical_hotspots.csv` file.
 
-**3. Boot the Command Center:**
-`streamlit run app.py`
-
-**4. Upload Telemetry:**
-Once the interface loads at `localhost:8501`, use the sidebar to upload a raw CSV dataset of traffic violations to initiate the AI spatial clustering.
+### Path 2: Command Center Dashboard (Streamlit UI)
+To launch the interactive deployment map and UI:
+1. Clone the repository and navigate to the project folder.
+2. Install dependencies:
+   `pip install -r requirements.txt`
+3. Boot the Command Center:
+   `streamlit run app.py`
+4. Once the interface loads in your browser, use the sidebar to upload the raw CSV dataset you downloaded from Google Drive to initiate the AI spatial clustering.
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 `neural-parking-grid/`
-`├── app.py                   # The Core Streamlit Application & AI Engine`
-`├── requirements.txt         # Package dependencies`
-`└── README.md                # Project documentation`
+`├── app.py                         # The Core Streamlit Application & AI Dashboard`
+`├── [Your_Notebook_Name].ipynb     # The mathematical research and pipeline notebook`
+`├── tactical_hotspots.csv          # Pre-computed deployment zones generated by the notebook`
+`├── requirements.txt               # Package dependencies`
+`└── README.md                      # Project documentation`
 
-*(Note: Raw telemetry datasets are excluded from this repository due to size constraints. The system expects a CSV upload via the user interface).*
+*(Note: Replace `[Your_Notebook_Name].ipynb` with the actual filename of your Jupyter notebook in the repository).*

@@ -2,7 +2,7 @@
 **An AI-Driven Urban Command Center for Proactive Traffic Enforcement**
 
 ## Access Links
-* **Live Command Center:** []
+* **Live Link:** [https://neural-parking-grid.streamlit.app/]
 * **Raw Telemetry Dataset (CSV):** [https://drive.google.com/file/d/19Tit28O-tZLeZ58_J_gXTRxzb8FzNaXG/view?usp=sharing]
 
 ---

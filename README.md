@@ -1,17 +1,9 @@
 # Neural Parking & Congestion Grid 
 **An AI-Driven Urban Command Center for Proactive Traffic Enforcement**
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)]([Live Link](https://drive.google.com/file/d/19Tit28O-tZLeZ58_J_gXTRxzb8FzNaXG/view?usp=sharing))
-[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-> **Hackathon Submission:** Solving the "Poor Visibility on Parking-Induced Congestion" Problem Statement.
-
----
-
 ## Access Links
-* **Live Command Center:** [[Insert your Live Streamlit Cloud Link Here]]
-* **Raw Telemetry Dataset (CSV):** [[Insert your Google Drive Dataset Link Here]]
+* **Live Command Center:** []
+* **Raw Telemetry Dataset (CSV):** [https://drive.google.com/file/d/19Tit28O-tZLeZ58_J_gXTRxzb8FzNaXG/view?usp=sharing]
 
 ---
 

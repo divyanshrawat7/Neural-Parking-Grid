@@ -106,7 +106,6 @@ if uploaded_file is not None:
         else:
             filtered_df = df
 
-        
         st.title("NEURAL PARKING & CONGESTION GRID")
         
         col1, col2, col3 = st.columns(3)
@@ -115,30 +114,10 @@ if uploaded_file is not None:
         col3.metric("JUNCTION THREATS", int(filtered_df['junction_violations'].sum()))
         st.markdown("<hr>", unsafe_allow_html=True)
 
-        st.markdown("<h4 style='color: #00F0FF; font-family: monospace;'>>> REAL-TIME THREAT ANALYTICS</h4>", unsafe_allow_html=True)
-        chart_col1, chart_col2 = st.columns(2)
-        
-        with chart_col1:
-            st.caption("JURISDICTION IMPACT SCORES")
-            bar_data = filtered_df[['jurisdiction', 'congestion_impact_score']].set_index('jurisdiction')
-            st.bar_chart(bar_data, color="#FF007F")
-            
-        with chart_col2:
-            st.caption("HOTSPOT PEAK ACTIVITY HOURS")
-            hour_data = filtered_df[filtered_df['peak_hour'] != -1] 
-            if not hour_data.empty:
-                hour_counts = hour_data['peak_hour'].value_counts().sort_index()
-                st.line_chart(hour_counts, color="#39FF14") 
-            else:
-                st.info("Insufficient temporal data for this view.")
-                
-        st.markdown("<hr>", unsafe_allow_html=True)
-
         map_col, data_col = st.columns([2, 1])
         
         with data_col:
             st.subheader("DEPLOYMENT MANIFEST")
-            
             target_options = ["OVERVIEW (ALL TARGETS)"] + [f"Rank {i+1}: {row['jurisdiction']} (Impact: {row['congestion_impact_score']})" for i, row in filtered_df.iterrows()]
             selected_target = st.selectbox("INITIATE TARGET LOCK:", target_options)
             
@@ -153,8 +132,16 @@ if uploaded_file is not None:
         with map_col:
             st.subheader("TACTICAL DEPLOYMENT MAP")
             
-            if selected_target == "OVERVIEW (ALL TARGETS)":
-                map_center = [filtered_df['center_lat'].median(), filtered_df['center_lon'].median()]
+            fallback_lat = 12.9716
+            fallback_lon = 77.5946
+            
+            if filtered_df.empty:
+                map_center = [fallback_lat, fallback_lon]
+                zoom_level = 12
+            elif selected_target == "OVERVIEW (ALL TARGETS)":
+                med_lat = filtered_df['center_lat'].median()
+                med_lon = filtered_df['center_lon'].median()
+                map_center = [med_lat, med_lon] if not (pd.isna(med_lat) or pd.isna(med_lon)) else [fallback_lat, fallback_lon]
                 zoom_level = 12
             else:
                 rank_idx = int(selected_target.split(':')[0].replace('Rank ', '')) - 1
@@ -164,41 +151,44 @@ if uploaded_file is not None:
 
             m = folium.Map(location=map_center, zoom_start=zoom_level, tiles='CartoDB dark_matter')
 
-            
             if heat_data:
-                HeatMap(heat_data, radius=12, blur=15, max_zoom=13, 
-                        gradient={0.3: '#00008B', 0.5: '#00F0FF', 0.7: '#39FF14', 1.0: '#FF007F'}).add_to(m)
+                HeatMap(heat_data, radius=12, blur=15, max_zoom=13, gradient={0.3: '#00008B', 0.5: '#00F0FF', 0.7: '#39FF14', 1.0: '#FF007F'}).add_to(m)
 
-            
             for idx, row in filtered_df.iterrows():
                 is_target = selected_target != "OVERVIEW (ALL TARGETS)" and idx == int(selected_target.split(':')[0].replace('Rank ', '')) - 1
-                
                 marker_radius = 15 if is_target else 8
                 marker_opacity = 0.9 if is_target else 0.5
                 
                 peak_time = f"{int(row['peak_hour'])}:00 HRS" if pd.notna(row['peak_hour']) and row['peak_hour'] != -1 else "VARIABLE"
-                popup_text = f"""
-                <div style='width: 200px; font-family: monospace; color: #333;'>
-                    <b>THREAT LEVEL:</b> {idx + 1}<br>
-                    <b>STATION:</b> {row['jurisdiction']}<br>
-                    <b>IMPACT SCORE:</b> <span style='color: red;'>{round(row['congestion_impact_score'], 1)}</span><br>
-                    <b>JUNCTION PROXIMITY:</b> {row['junction_violations']} detected<br>
-                    <b>OPTIMAL STRIKE TIME:</b> {peak_time}
-                </div>
-                """
+                popup_text = f"<div style='width: 200px; font-family: monospace; color: #333;'><b>THREAT LEVEL:</b> {idx + 1}<br><b>STATION:</b> {row['jurisdiction']}<br><b>IMPACT SCORE:</b> <span style='color: red;'>{round(row['congestion_impact_score'], 1)}</span><br><b>JUNCTION PROXIMITY:</b> {row['junction_violations']} detected<br><b>OPTIMAL STRIKE TIME:</b> {peak_time}</div>"
                 
                 folium.CircleMarker(
                     location=[row['center_lat'], row['center_lon']],
-                    radius=marker_radius,
-                    color='#00F0FF',
-                    weight=2,
-                    fill=True,
-                    fill_color='#FF007F',
-                    fill_opacity=marker_opacity,
+                    radius=marker_radius, color='#00F0FF', weight=2, fill=True, fill_color='#FF007F', fill_opacity=marker_opacity,
                     popup=folium.Popup(popup_text)
                 ).add_to(m)
 
             st_folium(m, use_container_width=True, height=600)
+            
+        st.markdown("<hr>", unsafe_allow_html=True)
+        st.markdown("<h4 style='color: #00F0FF; font-family: monospace;'REAL-TIME THREAT ANALYTICS</h4>", unsafe_allow_html=True)
+        chart_col1, chart_col2 = st.columns(2)
+        
+        with chart_col1:
+            st.caption("JURISDICTION IMPACT SCORES")
+            bar_data = filtered_df.groupby('jurisdiction')['congestion_impact_score'].sum()
+            st.bar_chart(bar_data, color="#FF007F")
+            
+        with chart_col2:
+            st.caption("HOTSPOT PEAK ACTIVITY HOURS")
+            hour_data = filtered_df[filtered_df['peak_hour'] != -1].copy()
+            if not hour_data.empty:
+                hour_counts = hour_data['peak_hour'].value_counts().sort_index()
+                hour_counts.index = hour_counts.index.map(lambda x: f"{int(x):02d}:00")
+                st.bar_chart(hour_counts, color="#39FF14") 
+            else:
+                st.info("Insufficient temporal data for this view.")
+
     else:
         st.error("SYSTEM ERROR: No significant parking hotspots detected.")
 else:

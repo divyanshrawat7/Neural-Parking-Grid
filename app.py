@@ -115,7 +115,25 @@ if uploaded_file is not None:
         col3.metric("JUNCTION THREATS", int(filtered_df['junction_violations'].sum()))
         st.markdown("<hr>", unsafe_allow_html=True)
 
+        st.markdown("<h4 style='color: #00F0FF; font-family: monospace;'>>> REAL-TIME THREAT ANALYTICS</h4>", unsafe_allow_html=True)
+        chart_col1, chart_col2 = st.columns(2)
         
+        with chart_col1:
+            st.caption("JURISDICTION IMPACT SCORES")
+            bar_data = filtered_df[['jurisdiction', 'congestion_impact_score']].set_index('jurisdiction')
+            st.bar_chart(bar_data, color="#FF007F")
+            
+        with chart_col2:
+            st.caption("HOTSPOT PEAK ACTIVITY HOURS")
+            hour_data = filtered_df[filtered_df['peak_hour'] != -1] 
+            if not hour_data.empty:
+                hour_counts = hour_data['peak_hour'].value_counts().sort_index()
+                st.line_chart(hour_counts, color="#39FF14") 
+            else:
+                st.info("Insufficient temporal data for this view.")
+                
+        st.markdown("<hr>", unsafe_allow_html=True)
+
         map_col, data_col = st.columns([2, 1])
         
         with data_col:
